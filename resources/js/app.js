@@ -9,25 +9,60 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 //vform
+
+//IMPORT
 import Vue from 'vue'
+import moment from "moment";
+import VueRouter from 'vue-router'
 import { Form, HasError, AlertError } from 'vform';
+import VueProgressBar from 'vue-progressbar'
+import swal from 'sweetalert2'
+
+//USE
+
+//Fire declare globally
+window.Fire = new Vue();
+
+//progressbar
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '3px'
+});
+
 Window.Form = Form;
 Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 
 //router
-import VueRouter from 'vue-router'
 Vue.use(VueRouter);
-
 
 let routes = [
     {path: '/home', component: require('./components/Home.vue').default}
     // {path: '/inputTTF', component: require('./components/InputTtf.vue').default}
 ]
-
 const router = new VueRouter({
     mode: 'history',
     routes
+});
+
+//SWAL
+window.swal = swal;
+const toast = swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+});
+window.toast = toast;
+
+// global filter
+Vue.filter('upText', function(text){
+    return text.charAt(0).toUpperCase() + text.slice(1)
+});
+
+Vue.filter('myDate',function(created){
+    return moment(created).format('MMMM Do YYYY');
 });
 
 
